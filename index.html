@@ -2,132 +2,147 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Déclaration d'amour animée</title>
+    <title>Déclaration d'amour ✨</title>
 
     <style>
         body {
             margin: 0;
-            padding: 0;
             height: 100vh;
-            background: linear-gradient(135deg, #ff7eb3, #ff758c);
-            font-family: "Segoe UI", sans-serif;
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            text-align: center;
+            background: radial-gradient(circle at top, #ff9ec4, #ff6b9d, #ff3b7a);
+            font-family: "Poppins", sans-serif;
             color: white;
-            overflow: hidden;
+        }
+
+        /* Effet de brillance animée */
+        .shine {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.25), transparent);
+            animation: shine 6s infinite;
+            pointer-events: none;
+        }
+
+        @keyframes shine {
+            0% { transform: translate(-50%, -50%) rotate(25deg); }
+            100% { transform: translate(50%, 50%) rotate(25deg); }
         }
 
         .container {
-            background: rgba(255, 255, 255, 0.15);
-            padding: 40px;
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 0 20px rgba(0,0,0,0.2);
-            max-width: 500px;
-            position: relative;
+            background: rgba(255, 255, 255, 0.12);
+            padding: 40px 35px;
+            border-radius: 25px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 0 20px rgba(0,0,0,0.25);
+            text-align: center;
+            max-width: 650px;
             z-index: 10;
         }
 
         h1 {
-            font-size: 2.2rem;
+            font-weight: 600;
             margin-bottom: 20px;
+            letter-spacing: 1px;
         }
 
-        p {
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 1s ease;
-        }
-
-        .visible {
-            opacity: 1;
-            transform: translateY(0);
+        #message {
+            font-size: 1.4rem;
+            line-height: 1.6;
+            min-height: 120px;
+            white-space: pre-line;
         }
 
         button {
-            padding: 10px 20px;
+            margin-top: 20px;
+            padding: 12px 25px;
+            font-size: 1.1rem;
             border: none;
+            border-radius: 25px;
             background: white;
-            color: #ff4b8c;
-            font-size: 1rem;
-            border-radius: 20px;
+            color: #ff2975;
             cursor: pointer;
+            font-weight: 600;
             transition: 0.3s;
         }
 
         button:hover {
-            background: #ffe6ef;
+            background: #ffe5ef;
         }
 
-        /* ❤️ Style des cœurs flottants */
+        /* Cœurs flottants */
         .heart {
-            position: absolute;
-            color: rgba(255, 255, 255, 0.85);
-            font-size: 25px;
+            position: fixed;
+            color: rgba(255,255,255,0.85);
+            font-size: 22px;
             animation: floatUp 4s linear forwards;
             pointer-events: none;
         }
 
         @keyframes floatUp {
-            0% {
-                transform: translateY(0) scale(1);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-200px) scale(1.8);
-                opacity: 0;
-            }
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-200px) scale(1.5); opacity: 0; }
         }
     </style>
 </head>
 <body>
 
+<div class="shine"></div>
+
 <div class="container">
-    <h1>💖 Déclaration d'amour 💖</h1>
+    <h1>💖 Une petite surprise pour toi 💖</h1>
 
-    <p id="message">
-        Depuis que tu es entré(e) dans ma vie, tout est devenu plus doux, 
-        plus beau, plus lumineux. Je t’aime, tout simplement. 💕
-    </p>
+    <p id="message"></p>
 
-    <button onclick="afficherMessage()">Voir le message</button>
+    <button onclick="startMessage()">Afficher le message</button>
 </div>
 
-<!-- 🎵 Fichier audio (remplace musique.mp3 par ton fichier) -->
 <audio id="musique" src="ca.aac" autoplay></audio>
 
 <script>
-    function afficherMessage() {
-        // Affiche le message
-        document.getElementById("message").classList.add("visible");
+    const text = 
+`Depuis que tu es entré(e) dans ma vie, 
+tout est devenu plus doux, plus beau, plus lumineux.
 
+Je t’aime, tout simplement. 💕`;
+
+    let index = 0;
+    const speed = 45; // vitesse d’écriture
+
+    function startMessage() {
         // Lance la musique
-        const audio = document.getElementById("musique");
-        audio.play();
+        document.getElementById("musique").play();
 
-        // Génère des cœurs animés toutes les 300 ms
-        setInterval(creerCoeur, 300);
+        // Empêche de lancer deux fois l’animation
+        index = 0;
+        document.getElementById("message").innerHTML = "";
+
+        typeWriter();
+        setInterval(createHeart, 300);
     }
 
-    function creerCoeur() {
+    // Effet machine à écrire
+    function typeWriter() {
+        if (index < text.length) {
+            document.getElementById("message").innerHTML += text.charAt(index);
+            index++;
+            setTimeout(typeWriter, speed);
+        }
+    }
+
+    // Cœurs flottants
+    function createHeart() {
         const heart = document.createElement("div");
         heart.classList.add("heart");
         heart.innerHTML = "❤️";
-
-        // Position horizontale aléatoire
         heart.style.left = Math.random() * window.innerWidth + "px";
-        heart.style.top = window.innerHeight + "px";
-
+        heart.style.bottom = "0px";
         document.body.appendChild(heart);
 
-        // Supprime le cœur après l’animation
-        setTimeout(() => {
-            heart.remove();
-        }, 4000);
+        setTimeout(() => heart.remove(), 4000);
     }
 </script>
 
