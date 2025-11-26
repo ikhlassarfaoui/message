@@ -3,23 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Déclaration d'amour ✨</title>
 
     <style>
-        body {
+        html, body {
+            height: 100%;
             margin: 0;
-            height: 100vh;
+            padding: 0;
+        }
+
+        body {
             overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
             background: radial-gradient(circle at top, #ff9ec4, #ff6b9d, #ff3b7a);
+            background-size: cover;              /* <-- Correction du bug */
+            background-repeat: no-repeat;        /* <-- Empêche la répétition */
+            background-attachment: fixed;        /* <-- Améliore la stabilité mobile */
             font-family: "Poppins", sans-serif;
             color: white;
+            position: relative;
         }
 
-        /* Effet de brillance animée */
+        /* Effet de brillance */
         .shine {
             position: absolute;
             width: 200%;
@@ -27,6 +34,8 @@
             background: linear-gradient(120deg, transparent, rgba(255,255,255,0.25), transparent);
             animation: shine 6s infinite;
             pointer-events: none;
+            top: 0;
+            left: 0;
         }
 
         @keyframes shine {
@@ -39,9 +48,11 @@
             padding: 40px 35px;
             border-radius: 25px;
             backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
             box-shadow: 0 0 20px rgba(0,0,0,0.25);
             text-align: center;
             max-width: 650px;
+            margin: 15px;
             z-index: 10;
         }
 
@@ -96,9 +107,7 @@
 
 <div class="container">
     <h1>💖 Une petite surprise pour toi 💖</h1>
-
     <p id="message"></p>
-
     <button onclick="startMessage()">Afficher le message</button>
 </div>
 
@@ -112,21 +121,21 @@ tout est devenu plus doux, plus beau, plus lumineux.
 Je t’aime, tout simplement. 💕`;
 
     let index = 0;
-    const speed = 45; // vitesse d’écriture
+    const speed = 45;
 
     function startMessage() {
-        // Lance la musique
-        document.getElementById("musique").play();
+        // Lecture audio (déclenchée par clic → compatible mobile)
+        const music = document.getElementById("musique");
+        music.play().catch(() => console.log("Audio bloqué par le navigateur."));
 
-        // Empêche de lancer deux fois l’animation
+        // Réinitialisation
         index = 0;
         document.getElementById("message").innerHTML = "";
 
         typeWriter();
-        setInterval(createHeart, 300);
+        setInterval(createHeart, 600); // Moins intensif sur mobile
     }
 
-    // Effet machine à écrire
     function typeWriter() {
         if (index < text.length) {
             document.getElementById("message").innerHTML += text.charAt(index);
@@ -135,7 +144,6 @@ Je t’aime, tout simplement. 💕`;
         }
     }
 
-    // Cœurs flottants
     function createHeart() {
         const heart = document.createElement("div");
         heart.classList.add("heart");
