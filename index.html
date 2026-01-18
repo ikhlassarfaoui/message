@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Message</title>
+    <title>Une surprise pour toi</title>
 
     <style>
         body {
@@ -15,42 +15,59 @@
             background: linear-gradient(135deg, #ff9ec4, #ff3b7a);
             font-family: Arial, sans-serif;
             color: white;
+            overflow: hidden;
         }
 
         .container {
             background: rgba(255,255,255,0.15);
-            padding: 30px;
-            border-radius: 20px;
+            padding: 35px;
+            border-radius: 25px;
             text-align: center;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 0 20px rgba(0,0,0,0.25);
+            max-width: 600px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 1.8rem;
         }
 
         #message {
             font-size: 1.4rem;
             line-height: 1.6;
             white-space: pre-line;
-            min-height: 100px;
+            min-height: 120px;
         }
 
         button {
             margin-top: 20px;
-            padding: 10px 25px;
-            font-size: 1rem;
+            padding: 12px 30px;
+            font-size: 1.1rem;
             border: none;
-            border-radius: 20px;
+            border-radius: 25px;
             cursor: pointer;
             background: white;
             color: #ff3b7a;
             font-weight: bold;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #ffe5ef;
         }
     </style>
 </head>
 <body>
 
 <div class="container">
+    <h1>💖 Une surprise pour toi 💖</h1>
     <p id="message"></p>
     <button onclick="startMessage()">Afficher le message</button>
 </div>
+
+<!-- Audio -->
+<audio id="audio" src="ca.aac"></audio>
 
 <script>
     const text = "إذا لم تجمعنا الأيام جمعتنا الذكريات و إذا القلب لم يراك فالعين لن تنساك\nتوحشتك برشا يا رومانية";
@@ -58,6 +75,9 @@
     const speed = 45;
 
     function startMessage() {
+        const audio = document.getElementById("audio");
+        audio.play().catch(() => console.log("Lecture audio bloquée"));
+
         index = 0;
         document.getElementById("message").innerHTML = "";
         typeWriter();
@@ -74,3 +94,4 @@
 
 </body>
 </html>
+
