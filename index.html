@@ -3,133 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Déclaration d'amour ✨</title>
+    <title>Message</title>
 
     <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
-
         body {
-            overflow: hidden;
+            margin: 0;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: radial-gradient(circle at top, #ff9ec4, #ff6b9d, #ff3b7a);
-            background-size: cover;              /* <-- Correction du bug */
-            background-repeat: no-repeat;        /* <-- Empêche la répétition */
-            background-attachment: fixed;        /* <-- Améliore la stabilité mobile */
-            font-family: "Poppins", sans-serif;
+            background: linear-gradient(135deg, #ff9ec4, #ff3b7a);
+            font-family: Arial, sans-serif;
             color: white;
-            position: relative;
-        }
-
-        /* Effet de brillance */
-        .shine {
-            position: absolute;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.25), transparent);
-            animation: shine 6s infinite;
-            pointer-events: none;
-            top: 0;
-            left: 0;
-        }
-
-        @keyframes shine {
-            0% { transform: translate(-50%, -50%) rotate(25deg); }
-            100% { transform: translate(50%, 50%) rotate(25deg); }
         }
 
         .container {
-            background: rgba(255, 255, 255, 0.12);
-            padding: 40px 35px;
-            border-radius: 25px;
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            box-shadow: 0 0 20px rgba(0,0,0,0.25);
+            background: rgba(255,255,255,0.15);
+            padding: 30px;
+            border-radius: 20px;
             text-align: center;
-            max-width: 650px;
-            margin: 15px;
-            z-index: 10;
-        }
-
-        h1 {
-            font-weight: 600;
-            margin-bottom: 20px;
-            letter-spacing: 1px;
+            backdrop-filter: blur(10px);
         }
 
         #message {
             font-size: 1.4rem;
             line-height: 1.6;
-            min-height: 120px;
             white-space: pre-line;
+            min-height: 100px;
         }
 
         button {
             margin-top: 20px;
-            padding: 12px 25px;
-            font-size: 1.1rem;
+            padding: 10px 25px;
+            font-size: 1rem;
             border: none;
-            border-radius: 25px;
-            background: white;
-            color: #ff2975;
+            border-radius: 20px;
             cursor: pointer;
-            font-weight: 600;
-            transition: 0.3s;
-        }
-
-        button:hover {
-            background: #ffe5ef;
-        }
-
-        /* Cœurs flottants */
-        .heart {
-            position: fixed;
-            color: rgba(255,255,255,0.85);
-            font-size: 22px;
-            animation: floatUp 4s linear forwards;
-            pointer-events: none;
-        }
-
-        @keyframes floatUp {
-            0% { transform: translateY(0) scale(1); opacity: 1; }
-            100% { transform: translateY(-200px) scale(1.5); opacity: 0; }
+            background: white;
+            color: #ff3b7a;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
 
-<div class="shine"></div>
-
 <div class="container">
-    <h1>💖 Une petite surprise pour toi 💖</h1>
     <p id="message"></p>
     <button onclick="startMessage()">Afficher le message</button>
 </div>
 
-<audio id="musique" src="ca.aac" autoplay></audio>
-
 <script>
-    const text = إذا لم تجمعنا الأيام جمعتنا الذكريات.. وإذا القلب لم يراك فالعين لن تنساك توحشتك برشا يا إخلاص 🙆;
-
+    const text = "إذا لم تجمعنا الأيام جمعتنا الذكريات و إذا القلب لم يراك فالعين لن تنساك\nتوحشتك برشا يا رومانية";
     let index = 0;
     const speed = 45;
 
     function startMessage() {
-        // Lecture audio (déclenchée par clic → compatible mobile)
-        const music = document.getElementById("musique");
-        music.play().catch(() => console.log("Audio bloqué par le navigateur."));
-
-        // Réinitialisation
         index = 0;
         document.getElementById("message").innerHTML = "";
-
         typeWriter();
-        setInterval(createHeart, 600); // Moins intensif sur mobile
     }
 
     function typeWriter() {
@@ -138,17 +69,6 @@
             index++;
             setTimeout(typeWriter, speed);
         }
-    }
-
-    function createHeart() {
-        const heart = document.createElement("div");
-        heart.classList.add("heart");
-        heart.innerHTML = "❤️";
-        heart.style.left = Math.random() * window.innerWidth + "px";
-        heart.style.bottom = "0px";
-        document.body.appendChild(heart);
-
-        setTimeout(() => heart.remove(), 4000);
     }
 </script>
 
